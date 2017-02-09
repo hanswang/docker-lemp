@@ -1,0 +1,8 @@
+nginx:
+  build: nginx
+php70:
+  build: php70
+php70cli:
+  build: php70cli
+mariadb:
+  build: mariadb
