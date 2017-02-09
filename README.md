@@ -48,42 +48,37 @@ When disabling mailcatcher you can remove the mailcatcher service in your compos
 
 You can specify the configuration file with the `-f` flag, which will result in:
 
-    docker-compose -f development.yml up
+    docker-compose -f development.yml up -d
     
 OR
 
-    docker-compose -f production.yml up
+    docker-compose -f production.yml up -d
 
 ## More detail command line
 
-    # Start development environment. Will recreate linked containers of new services, using compose-up-development.yml
-    up_dev
-    # The same as up_dev but then for your production environment, using compose-up-production.yml
-    up_prod
+    # Start development environment. Will recreate linked containers of new services, using development.yml
+    docker-compose -f development.yml up -d
+    # The same as up_dev but then for your production environment, using production.yml
+    docker-compose -f production.yml up -d
     # Create a backup of the MariaDB instance in data/backups/
-    backup_database
-    # Create a backup of the wwwdata container volum in data/backups/
-    backup_www
+	docker exec -it $(CONTAINER_BACKUP) /opt/backupdatabase.sh
     # Reload PHP FPM of the php70 service
-    reload_php_70:
+	docker exec -it php70 service php7.0-fpm reload
     # Reload the nginx configuration files (service nginx reload)
-    reload_nginx:
+	docker exec -it nginx service nginx reload
 	
 	# Connect to different containers. (Create a bash shell session inside a container)
-	connect_mailcatcher
-	connect_mariadb
-	connect_nginx
-	connect_php70
-	connect_wwwdata
+	docker exec -it mailcatcher bash
+	docker exec -it mariadb bash
+	docker exec -it nginx bash
+	docker exec -it php70 bash
 
 Commands for building and developing the services:
 
     # Stop and remove all containers shown by 'docker ps -a'
-    clear_containers
+    docker-compose -f production.yml down
     # Remove all stored images shown by 'docker images'
-    clear_images
-    # Will run both 'clear_containers' and 'clear_images"
-    clear_all
+    docker-compose -f production.yml down --rmi all
     # Use the compose build file to build all containers, even unused containers for specific environments
-    build
+	docker-compose -f stack-build.yml build
 
