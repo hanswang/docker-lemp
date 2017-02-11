@@ -11,6 +11,8 @@ RUN \
   add-apt-repository -y ppa:nginx/stable && \
   apt-get update && \
   apt-get dist-upgrade -y && \
+  echo "deb http://mirror.optus.net/ubuntu xenial main universe" > /etc/apt/sources.list && \
+  apt-get update -y && \
   apt-get install -y vim wget curl nano && \
   apt-get install -y ca-certificates nginx && \
   chown -R www-data:www-data /var/lib/nginx && \
