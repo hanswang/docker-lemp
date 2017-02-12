@@ -1,24 +1,29 @@
-FROM phusion/baseimage:0.9.18
+FROM phusion/baseimage:latest
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV XDEBUG_VERSION xdebug-2.4.0rc4.tgz
 ENV APCU_REPO https://github.com/krakjoe/apcu
 
 RUN \
-  apt-get update && \  
+  echo "deb http://mirror.optus.net/ubuntu xenial main universe" > /etc/apt/sources.list && \
+  echo "deb http://mirror.optus.net/ubuntu xenial-security main restricted" >> /etc/apt/sources.list && \
+  echo "deb http://mirror.optus.net/ubuntu xenial-updates main restricted" >> /etc/apt/sources.list && \
+  apt-get update && \
+  apt-get upgrade -y && \
   rm -f /etc/service/sshd/down && \
   locale-gen en_US.UTF-8 && \
-  locale-gen nl_BE.UTF-8 && \
-  locale-gen nl_NL.UTF-8 && \
-  locale-gen de_DE.UTF-8 && \
-  locale-gen fr_FR.UTF-8 && \
   dpkg-reconfigure locales && \
   export LANG=en_US.UTF-8 && \
-  apt-get install -y nano wget curl python htop git locate zip unzip telnet zsh python-software-properties software-properties-common build-essential libpcre3-dev nodejs npm ant && \
-  add-apt-repository -y ppa:ondrej/php && \
+  apt-get install -yq wget curl python htop git locate zip unzip telnet zsh python-software-properties software-properties-common build-essential libpcre3-dev ant
+
+RUN \
+  curl -sL https://deb.nodesource.com/setup_7.x | bash - && \
+  apt-get install -yq nodejs
+
+RUN \
+  LC_ALL=C.UTF-8 add-apt-repository -y ppa:ondrej/php && \
   add-apt-repository -y ppa:brightbox/ruby-ng && \
   apt-get update && \
-  apt-get dist-upgrade -y && \
   apt-get install -y php7.0-cli php7.0-fpm php7.0-mysql php7.0-pgsql php7.0-sqlite php7.0-curl php7.0-gd php7.0-gmp php7.0-mcrypt php7.0-intl php7.0-dev php7.0-xsl php7.0-imap php7.0-ldap php7.0-xml php7.0-bcmath php7.0-mbstring php7.0-soap php-memcached php-pear xvfb libsqlite3-dev ruby2.2 ruby2.2-dev libxext6 xfonts-75dpi fontconfig libxrender1 xfonts-base libssh2-1-dev libssh2-1
 
 RUN \
@@ -103,23 +108,9 @@ RUN \
   phpunit --version && \
   phing -v
 
-# Npm + Bower + grunt
-RUN \
-    npm install -g bower grunt grunt-cli && \
-    ln -s /usr/bin/nodejs /usr/bin/node && \
-    bower -version && \
-    grunt --version
-RUN chown -R www-data ~/.npm
-
 # WKHTMLTOPDF
 RUN \
-  wget -qq http://download.gna.org/wkhtmltopdf/0.12/0.12.2.1/wkhtmltox-0.12.2.1_linux-trusty-amd64.deb && \
-  dpkg -i wkhtmltox-0.12.2.1_linux-trusty-amd64.deb && \
-  apt-get -f -y install && \
-  apt-get -y install xvfb && \
-  echo 'xvfb-run --server-args="-screen 0, 1024x768x24" /usr/local/bin/wkhtmltopdf $*' > /usr/bin/wkhtmltopdf.sh && \
-  chmod a+rx /usr/bin/wkhtmltopdf.sh && \
-  sudo ln -s /usr/bin/wkhtmltopdf.sh /usr/bin/wkhtmltopdf && \
+  apt-get -y install wkhtmltopdf && \
   wkhtmltopdf --version
 
 RUN \
@@ -130,11 +121,6 @@ RUN \
   sed -i "s/short_open_tag.*=.*/short_open_tag = On/" /etc/php/7.0/fpm/php.ini && \
   sed -i "s/short_open_tag.*=.*/short_open_tag = On/" /etc/php/7.0/cli/php.ini && \
   sed -i -e "s/;daemonize\s*=\s*yes/daemonize = no/g" /etc/php/7.0/fpm/php-fpm.conf
-
-RUN \
-  sudo curl -LsS https://symfony.com/installer -o /usr/local/bin/symfony && \
-  sudo chmod a+x /usr/local/bin/symfony && \
-  symfony --version
 
 RUN \
   apt-get clean && \
