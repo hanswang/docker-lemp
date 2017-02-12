@@ -8,10 +8,8 @@ RUN \
   rm -rf /etc/service/sshd /etc/my_init.d/00_regen_ssh_host_keys.sh && \
   locale-gen en_US.UTF-8 && \
   export LANG=en_US.UTF-8 && \
-  add-apt-repository -y ppa:nginx/stable && \
-  apt-get update && \
-  apt-get dist-upgrade -y && \
   echo "deb http://mirror.optus.net/ubuntu xenial main universe" > /etc/apt/sources.list && \
+  add-apt-repository -y ppa:nginx/stable && \
   apt-get update -y && \
   apt-get install -y vim wget curl nano && \
   apt-get install -y ca-certificates nginx && \
