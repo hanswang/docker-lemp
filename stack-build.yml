@@ -1,8 +1,11 @@
-nginx:
-  build: nginx
-php70:
-  build: php70
-php70cli:
-  build: php70cli
-mariadb:
-  build: mariadb
+version: '2.0'
+services:
+    nginx:
+        build: nginx
+        image: lemp/nginx
+    php70:
+        build: php70
+        image: lemp/php70
+    mariadb:
+        build: mariadb
+        image: lemp/mariadb
