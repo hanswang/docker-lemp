@@ -9,9 +9,11 @@ RUN \
   locale-gen en_US.UTF-8 && \
   export LANG=en_US.UTF-8 && \
   echo "deb http://mirror.optus.net/ubuntu xenial main universe" > /etc/apt/sources.list && \
+  echo "deb http://mirror.optus.net/ubuntu xenial-security main restricted" >> /etc/apt/sources.list && \
+  echo "deb http://mirror.optus.net/ubuntu xenial-updates main restricted" >> /etc/apt/sources.list && \
   add-apt-repository -y ppa:nginx/stable && \
   apt-get update -y && \
-  apt-get install -y vim wget curl nano && \
+  apt-get install -y vim wget curl && \
   apt-get install -y ca-certificates nginx && \
   chown -R www-data:www-data /var/lib/nginx && \
   apt-get clean && \
