@@ -3,7 +3,7 @@ server {
     server_name _ localhost php70.dev www.php70.dev;
 
     index index.php index.html;
-    root /var/www;
+    root /var/www/public;
 
     charset utf-8;
 
@@ -11,7 +11,7 @@ server {
     error_log  /var/log/nginx/default-php70-error.log error;
 
     location / {
-        try_files $uri $uri/ =404;
+        try_files $uri $uri/ /index.php?$query_string;
     }
 
     location ~ \.php$ {
