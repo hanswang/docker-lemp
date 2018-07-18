@@ -1,14 +1,14 @@
 server {
     listen 80 default_server;
-    server_name _ localhost php70.dev www.php70.dev;
+    server_name _ localhost;
 
     index index.php index.html;
     root /var/www/public;
 
     charset utf-8;
 
-    access_log /var/log/nginx/default-php70-access.log;
-    error_log  /var/log/nginx/default-php70-error.log error;
+    access_log /var/log/nginx/default-php72-access.log;
+    error_log  /var/log/nginx/default-php72-error.log error;
 
     location / {
         try_files $uri $uri/ /index.php?$query_string;
@@ -16,7 +16,7 @@ server {
 
     location ~ \.php$ {
         # try_files $uri =404;
-        fastcgi_pass php70;
+        fastcgi_pass php72;
         fastcgi_index index.php;
         fastcgi_split_path_info ^(.+\.php)(/.*)$;
         include fastcgi_params;

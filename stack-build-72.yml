@@ -1,0 +1,11 @@
+version: '2.0'
+services:
+    nginx:
+        build: nginx
+        image: lemp/nginx
+    php70:
+        build: php72
+        image: lemp/php72
+    mariadb:
+        build: mariadb
+        image: lemp/mariadb

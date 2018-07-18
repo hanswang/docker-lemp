@@ -6,24 +6,23 @@ nginx:
     - ./data/log/nginx:/var/log/nginx
     - ./data/www:/var/www
   links:
-    - php70
+    - php72
   ports:
     - "80:80"
     - "443:443"
   restart: always
-php70:
-  container_name: php70
-  image: lemp/php70
+php72:
+  container_name: php72
+  image: lemp/php72
   environment:
     PHP_ENV: 'development'
-    PHP_APCU_ENABLED: 'false'
     PHP_XDEBUG_ENABLED: 'true'
     PHP_MAILCATCHER_ENABLED: 'true'
   volumes:
-    - ./data/config/php/pool70/:/etc/php/7.0/fpm/pool.d
-    - ./data/config/php/ini70/development.ini:/etc/php/mods-available/development.ini
-    - ./data/config/php/ini70/production.ini:/etc/php/mods-available/production.ini
-    - ./data/log/php70:/var/log/php
+    - ./data/config/php/pool72/:/etc/php/7.2/fpm/pool.d
+    - ./data/config/php/ini72/development.ini:/etc/php/7.2/mods-available/development.ini
+    - ./data/config/php/ini72/production.ini:/etc/php/7.2/mods-available/production.ini
+    - ./data/log/php72:/var/log/php
     - ./data/www:/var/www
   links:
     - mariadb
