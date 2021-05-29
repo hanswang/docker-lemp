@@ -1,0 +1,12 @@
+mariadb:
+  container_name: mariadb
+  image: lemp/mariadb
+  volumes:
+    - ./data/config/mariadb/my.cnf:/etc/mysql/my.cnf
+    - ./data/log/mariadb:/var/log/mysql
+    - ./data/mariadb:/var/lib/mysql
+  environment:
+    DB_ADMIN_PASS: pass
+  ports:
+    - "3306:3306"
+  restart: always
